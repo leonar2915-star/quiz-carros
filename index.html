@@ -174,11 +174,34 @@ function checkAnswer(i) {
   if (current < quiz.length) {
     setTimeout(showQuestion, 400);
   } else {
-    bar.style.width = "100%";
-    qEl.innerText = `🔥 Puntaje: ${score}/${quiz.length}`;
-    aEl.innerHTML = `<button onclick="location.reload()">Jugar otra vez</button>`;
+  bar.style.width = "100%";
+
+  let rankText = "Top 40% 😬";
+  let emoji = "😬";
+
+  if (score === 5) {
+    rankText = "Top 3% 🏆";
+    emoji = "🏆🔥";
+  } else if (score === 4) {
+    rankText = "Top 10% 😎";
+    emoji = "😎";
+  } else if (score === 3) {
+    rankText = "Top 25% 👍";
+    emoji = "👍";
   }
+
+  qEl.innerHTML = `
+    ${emoji}<br>
+    Puntaje: ${score}/${quiz.length}<br>
+    <strong>${rankText}</strong>
+  `;
+
+  aEl.innerHTML = `
+    <p>👀 Muy pocos llegan al Top 3%</p>
+    <button onclick="location.reload()">🔁 Intentar otra vez</button>
+  `;
 }
+
 
 function toggleMusic() {
   if (!musicOn) {
@@ -196,4 +219,5 @@ showQuestion();
 
 </body>
 </html>
+
 

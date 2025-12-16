@@ -26,7 +26,7 @@ body {
   box-shadow: 0 0 25px rgba(0,0,0,.5);
 }
 
-h1 { margin-top: 0; }
+h1 { margin-top: 0; text-align:center; }
 
 .progress {
   width: 100%;
@@ -85,19 +85,12 @@ button:hover { opacity: .9; }
 </div>
 
 <!-- AUDIOS -->
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="soundCorrect">
-  <source src="correct.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="soundWrong">
-  <source src="wrong.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop src="music.mp3"></audio>
+<audio id="soundCorrect" src="correct.mp3"></audio>
+<audio id="soundWrong" src="wrong.mp3"></audio>
 
 <script>
+// ================== PREGUNTAS ==================
 const allQuestions = [
   {q:"¿Qué marca fabrica el Supra?",a:["Nissan","Toyota","Honda","Mazda"],c:1},
   {q:"¿Qué significa JDM?",a:["Japanese Drift Machine","Japanese Domestic Market","Japan Drive Mode","Japan Drift Motor"],c:1},
@@ -108,17 +101,11 @@ const allQuestions = [
   {q:"¿Qué auto es muscle car?",a:["Civic","Mustang","Corolla","Golf"],c:1},
   {q:"¿Qué marca es japonesa?",a:["BMW","Mercedes","Nissan","Audi"],c:2},
   {q:"¿Qué tipo de tracción tiene un GT-R?",a:["FWD","RWD","AWD","4x2"],c:2},
-  {q:"¿Qué marca usa el logo de los 4 aros?",a:["BMW","Audi","VW","Porsche"],c:1},
-  {q:"¿Qué combustible usa un Tesla?",a:["Gasolina","Diésel","Eléctrico","Híbrido"],c:2},
-  {q:"¿Qué marca fabrica el Civic?",a:["Toyota","Honda","Nissan","Mazda"],c:1},
-  {q:"¿Qué país es Ferrari?",a:["Francia","Italia","Alemania","Japón"],c:1},
-  {q:"¿Qué auto es JDM?",a:["BMW M4","Audi RS5","Nissan Silvia","Ferrari F8"],c:2},
-  {q:"¿Qué marca creó el Camaro?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:1}
+  {q:"¿Qué marca usa el logo de los 4 aros?",a:["BMW","Audi","VW","Porsche"],c:1}
 ];
 
-// seleccionar 5 al azar
+// ================== LOGICA ==================
 const quiz = [...allQuestions].sort(() => Math.random() - 0.5).slice(0,5);
-
 let current = 0;
 let score = 0;
 let musicOn = false;
@@ -126,61 +113,58 @@ let musicOn = false;
 const qEl = document.getElementById("question");
 const aEl = document.getElementById("answers");
 const bar = document.getElementById("progressBar");
-
 const bgMusic = document.getElementById("bgMusic");
 const soundCorrect = document.getElementById("soundCorrect");
 const soundWrong = document.getElementById("soundWrong");
 
-function safePlay(audio) {
+function playSafe(audio){
   try {
     audio.currentTime = 0;
     audio.play();
-  } catch (e) {}
+  } catch(e){}
 }
 
-function showQuestion() {
+function showQuestion(){
   const q = quiz[current];
   qEl.textContent = q.q;
   aEl.innerHTML = "";
   bar.style.width = `${(current / quiz.length) * 100}%`;
 
-  q.a.forEach((txt, i) => {
+  q.a.forEach((txt,i)=>{
     const btn = document.createElement("button");
     btn.textContent = txt;
-    btn.onclick = () => checkAnswer(i);
+    btn.onclick = ()=>checkAnswer(i);
     aEl.appendChild(btn);
   });
 }
 
-function checkAnswer(i) {
-  if (i === quiz[current].c) {
+function checkAnswer(i){
+  if(i === quiz[current].c){
     score++;
-    safePlay(soundCorrect);
+    playSafe(soundCorrect);
   } else {
-    safePlay(soundWrong);
+    playSafe(soundWrong);
   }
   nextQuestion();
 }
 
-function nextQuestion() {
+function nextQuestion(){
   current++;
-
-  if (current < quiz.length) {
+  if(current < quiz.length){
     showQuestion();
   } else {
     bar.style.width = "100%";
 
     let rank = "Top 40% 😬";
-    if (score === 5) rank = "Top 3% 🏆🔥";
-    else if (score === 4) rank = "Top 10% 😎";
-    else if (score === 3) rank = "Top 25% 👍";
+    if(score === 5) rank = "Top 3% 🏆🔥";
+    else if(score === 4) rank = "Top 10% 😎";
+    else if(score === 3) rank = "Top 25% 👍";
 
     qEl.innerHTML = `
       <h2>🔥 Resultado final</h2>
       <p>Puntaje: ${score}/5</p>
       <p><strong>${rank}</strong></p>
     `;
-
     aEl.innerHTML = `
       <p>👀 Muy pocos llegan al Top 3%</p>
       <button onclick="location.reload()">🔁 Intentar otra vez</button>
@@ -188,13 +172,11 @@ function nextQuestion() {
   }
 }
 
-function toggleMusic() {
-  if (!musicOn) {
-    try {
-      bgMusic.volume = 0.3;
-      bgMusic.play();
-      musicOn = true;
-    } catch(e){}
+function toggleMusic(){
+  if(!musicOn){
+    playSafe(bgMusic);
+    bgMusic.volume = 0.3;
+    musicOn = true;
   } else {
     bgMusic.pause();
     musicOn = false;
@@ -203,3 +185,7 @@ function toggleMusic() {
 
 showQuestion();
 </script>
+
+</body>
+</html>
+

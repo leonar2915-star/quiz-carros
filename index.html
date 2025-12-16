@@ -15,6 +15,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .container {
@@ -24,6 +25,9 @@ body {
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 0 25px rgba(0,0,0,.5);
+  position: relative;
+  z-index: 1;
+  text-align: center;
 }
 
 h1 { margin-top: 0; text-align:center; }
@@ -54,6 +58,8 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  position: relative;
+  z-index: 2; /* Botones siempre encima de anuncios */
 }
 
 button:hover { opacity: .9; }
@@ -65,6 +71,7 @@ button:hover { opacity: .9; }
   padding: 8px 12px;
   border-radius: 20px;
   font-size: 14px;
+  z-index: 2;
 }
 
 .ad-container {
@@ -75,6 +82,8 @@ button:hover { opacity: .9; }
   overflow: hidden;
   background: rgba(255,255,255,0.05);
   padding: 10px 0;
+  position: relative;
+  z-index: 1; /* Anuncios debajo de botones */
 }
 </style>
 
@@ -107,7 +116,7 @@ button:hover { opacity: .9; }
   <!-- ANUNCIO EN MEDIO DEL QUIZ -->
   <div class="ad-container">
     <script type="text/javascript">
-      aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
+      aclib.runAutoTag({ zoneId: 'exse1vv5nl' }); <!-- Segundo Zone ID -->
     </script>
   </div>
 
@@ -116,7 +125,7 @@ button:hover { opacity: .9; }
 <!-- ANUNCIO ABAJO / FOOTER -->
 <div class="ad-container">
   <script type="text/javascript">
-    aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
+    aclib.runAutoTag({ zoneId: 'exse1vv5nm' }); <!-- Tercer Zone ID -->
   </script>
 </div>
 
@@ -153,9 +162,7 @@ const bgMusic = document.getElementById("bgMusic");
 const soundCorrect = document.getElementById("soundCorrect");
 const soundWrong = document.getElementById("soundWrong");
 
-function playSafe(audio){
-  try { audio.currentTime = 0; audio.play(); } catch(e){}
-}
+function playSafe(audio){ try { audio.currentTime = 0; audio.play(); } catch(e){} }
 
 function showQuestion(){
   const q = quiz[current];
@@ -221,5 +228,6 @@ showQuestion();
 
 </body>
 </html>
+
 
 

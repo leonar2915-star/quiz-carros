@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ======== BODY ======== */
 body {
   margin: 0;
   min-height: 100vh;
@@ -18,20 +19,27 @@ body {
   flex-direction: column;
 }
 
+/* ======== CONTENEDOR CENTRAL ======== */
 .container {
   width: 100%;
   max-width: 420px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.8);
   border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 0 25px rgba(0,0,0,.5);
+  padding: 30px 20px;
+  box-shadow: 0 0 35px rgba(0,0,0,0.7);
   position: relative;
   z-index: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* ======== TITULOS ======== */
 h1 { margin-top: 0; text-align:center; }
+h2 { margin: 15px 0; }
 
+/* ======== PROGRESO ======== */
 .progress {
   width: 100%;
   height: 10px;
@@ -48,6 +56,7 @@ h1 { margin-top: 0; text-align:center; }
   transition: width .3s;
 }
 
+/* ======== BOTONES ======== */
 button {
   width: 100%;
   padding: 12px;
@@ -59,11 +68,12 @@ button {
   font-size: 16px;
   cursor: pointer;
   position: relative;
-  z-index: 2; /* Botones siempre encima de anuncios */
+  z-index: 2; /* Siempre encima de anuncios */
 }
 
 button:hover { opacity: .9; }
 
+/* ======== BOTON DE MUSICA ======== */
 .music-btn {
   position: fixed;
   top: 10px;
@@ -74,6 +84,7 @@ button:hover { opacity: .9; }
   z-index: 2;
 }
 
+/* ======== ANUNCIOS ======== */
 .ad-container {
   width: 100%;
   text-align: center;
@@ -83,7 +94,7 @@ button:hover { opacity: .9; }
   background: rgba(255,255,255,0.05);
   padding: 10px 0;
   position: relative;
-  z-index: 1; /* Anuncios debajo de botones */
+  z-index: 1; /* Debajo de botones */
 }
 </style>
 
@@ -110,13 +121,14 @@ button:hover { opacity: .9; }
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
+  <!-- CUBO DE PREGUNTAS CENTRADO -->
   <h2 id="question">Cargando…</h2>
   <div id="answers"></div>
 
   <!-- ANUNCIO EN MEDIO DEL QUIZ -->
   <div class="ad-container">
     <script type="text/javascript">
-      aclib.runAutoTag({ zoneId: 'exse1vv5nl' }); <!-- Segundo Zone ID -->
+      aclib.runAutoTag({ zoneId: 'exse1vv5nl' });
     </script>
   </div>
 
@@ -125,7 +137,7 @@ button:hover { opacity: .9; }
 <!-- ANUNCIO ABAJO / FOOTER -->
 <div class="ad-container">
   <script type="text/javascript">
-    aclib.runAutoTag({ zoneId: 'exse1vv5nm' }); <!-- Tercer Zone ID -->
+    aclib.runAutoTag({ zoneId: 'exse1vv5nm' });
   </script>
 </div>
 
@@ -228,6 +240,3 @@ showQuestion();
 
 </body>
 </html>
-
-
-

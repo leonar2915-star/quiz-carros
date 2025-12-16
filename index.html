@@ -129,9 +129,8 @@ const allQuestions = [
 {q:"¿Qué auto es híbrido?",a:["GT-R","Prius","Mustang","Camaro"],c:1},
 {q:"¿Qué marca creó el Challenger?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:2}
 ];
-
 // seleccionar 5 al azar
-const quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0,5);
+const quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 5);
 
 let current = 0;
 let score = 0;
@@ -160,10 +159,22 @@ function showQuestion() {
   });
 }
 
+function checkAnswer(i) {
+  if (i === quiz[current].c) {
+    score++;
+    soundCorrect.currentTime = 0;
+    soundCorrect.play();
+  } else {
+    soundWrong.currentTime = 0;
+    soundWrong.play();
+  }
+  nextQuestion();
+}
+
 function nextQuestion() {
   current++;
 
-  if (current < selectedQuestions.length) {
+  if (current < quiz.length) {
     showQuestion();
   } else {
     bar.style.width = "100%";
@@ -173,28 +184,17 @@ function nextQuestion() {
     else if (score === 4) rank = "Top 10% 😎";
     else if (score === 3) rank = "Top 25% 👍";
 
-    question.innerHTML = `
+    qEl.innerHTML = `
       <h2>🔥 Resultado final</h2>
       <p>Puntaje: ${score}/5</p>
       <p><strong>${rank}</strong></p>
     `;
 
-    answers.innerHTML = `
+    aEl.innerHTML = `
+      <p>👀 Muy pocos llegan al Top 3%</p>
       <button onclick="location.reload()">🔁 Intentar otra vez</button>
     `;
   }
-}
-
-  qEl.innerHTML = `
-    ${emoji}<br>
-    Puntaje: ${score}/${quiz.length}<br>
-    <strong>${rankText}</strong>
-  `;
-
-  aEl.innerHTML = `
-    <p>👀 Muy pocos llegan al Top 3%</p>
-    <button onclick="location.reload()">🔁 Intentar otra vez</button>
-  `;
 }
 
 function toggleMusic() {
@@ -209,11 +209,3 @@ function toggleMusic() {
 }
 
 showQuestion();
-</script>
-
-</body>
-</html>
-
-
-
-

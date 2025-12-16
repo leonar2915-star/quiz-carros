@@ -66,7 +66,21 @@ button:hover { opacity: .9; }
   border-radius: 20px;
   font-size: 14px;
 }
+
+.ad-container {
+  width: 100%;
+  text-align: center;
+  margin: 15px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  padding: 10px 0;
+}
 </style>
+
+<!-- Script base de AdCash -->
+<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+
 </head>
 
 <body>
@@ -76,12 +90,34 @@ button:hover { opacity: .9; }
 <div class="container">
   <h1>🚗 CarBrainIQ</h1>
 
+  <!-- ANUNCIO ARRIBA DEL CONTENIDO -->
+  <div class="ad-container">
+    <script type="text/javascript">
+      aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
+    </script>
+  </div>
+
   <div class="progress">
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
   <h2 id="question">Cargando…</h2>
   <div id="answers"></div>
+
+  <!-- ANUNCIO EN MEDIO DEL QUIZ -->
+  <div class="ad-container">
+    <script type="text/javascript">
+      aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
+    </script>
+  </div>
+
+</div>
+
+<!-- ANUNCIO ABAJO / FOOTER -->
+<div class="ad-container">
+  <script type="text/javascript">
+    aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
+  </script>
 </div>
 
 <!-- AUDIOS -->
@@ -118,10 +154,7 @@ const soundCorrect = document.getElementById("soundCorrect");
 const soundWrong = document.getElementById("soundWrong");
 
 function playSafe(audio){
-  try {
-    audio.currentTime = 0;
-    audio.play();
-  } catch(e){}
+  try { audio.currentTime = 0; audio.play(); } catch(e){}
 }
 
 function showQuestion(){
@@ -188,4 +221,5 @@ showQuestion();
 
 </body>
 </html>
+
 

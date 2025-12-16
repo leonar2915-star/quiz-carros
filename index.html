@@ -99,38 +99,25 @@ button:hover { opacity: .9; }
 
 <script>
 const allQuestions = [
-{q:"¿Qué marca fabrica el Supra?",a:["Nissan","Toyota","Honda","Mazda"],c:1},
-{q:"¿Qué significa JDM?",a:["Japanese Drift Machine","Japanese Domestic Market","Japan Drive Mode","Japan Drift Motor"],c:1},
-{q:"¿Qué marca tiene el logo del caballo?",a:["Porsche","Ferrari","Ford","Mustang"],c:1},
-{q:"¿Qué marca creó el Skyline?",a:["Toyota","Nissan","Honda","Subaru"],c:1},
-{q:"¿Qué motor tiene el Hellcat?",a:["V6","V8","V10","V12"],c:1},
-{q:"¿Qué marca es alemana?",a:["Audi","Toyota","Hyundai","Mazda"],c:0},
-{q:"¿Qué auto es muscle car?",a:["Civic","Mustang","Corolla","Golf"],c:1},
-{q:"¿Qué marca es japonesa?",a:["BMW","Mercedes","Nissan","Audi"],c:2},
-{q:"¿Qué tipo de tracción tiene un GT-R?",a:["FWD","RWD","AWD","4x2"],c:2},
-{q:"¿Qué marca usa el logo de los 4 aros?",a:["BMW","Audi","VW","Porsche"],c:1},
-{q:"¿Qué combustible usa un Tesla?",a:["Gasolina","Diésel","Eléctrico","Híbrido"],c:2},
-{q:"¿Qué marca fabrica el Civic?",a:["Toyota","Honda","Nissan","Mazda"],c:1},
-{q:"¿Qué país es Ferrari?",a:["Francia","Italia","Alemania","Japón"],c:1},
-{q:"¿Qué auto es JDM?",a:["BMW M4","Audi RS5","Nissan Silvia","Ferrari F8"],c:2},
-{q:"¿Qué marca creó el Camaro?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:1},
-{q:"¿Qué significa AWD?",a:["All Wheel Drive","Auto Wheel Drift","Advanced Wheel Drive","All Wheel Drift"],c:0},
-{q:"¿Qué marca tiene el logo del toro?",a:["Ferrari","Lamborghini","Porsche","Bugatti"],c:1},
-{q:"¿Qué auto es eléctrico?",a:["Supra","GT-R","Tesla Model 3","Mustang GT"],c:2},
-{q:"¿Qué marca creó el Golf?",a:["Audi","VW","Seat","Skoda"],c:1},
-{q:"¿Qué marca es coreana?",a:["Hyundai","Honda","Toyota","Nissan"],c:0},
-{q:"¿Qué auto es de rally?",a:["Supra","WRX","Charger","Camaro"],c:1},
-{q:"¿Qué motor es más común en supercars?",a:["V6","V8","V10","V12"],c:3},
-{q:"¿Qué marca fabrica el Chiron?",a:["Pagani","Bugatti","Koenigsegg","Ferrari"],c:1},
-{q:"¿Qué tracción usan la mayoría de los muscle cars?",a:["AWD","FWD","RWD","4x4"],c:2},
-{q:"¿Qué marca creó el RX-7?",a:["Mazda","Toyota","Honda","Nissan"],c:0},
-{q:"¿Qué tipo de motor usa el RX-7?",a:["V6","V8","Rotativo","Eléctrico"],c:2},
-{q:"¿Qué marca es sueca?",a:["Volvo","BMW","Audi","Renault"],c:0},
-{q:"¿Qué auto es híbrido?",a:["GT-R","Prius","Mustang","Camaro"],c:1},
-{q:"¿Qué marca creó el Challenger?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:2}
+  {q:"¿Qué marca fabrica el Supra?",a:["Nissan","Toyota","Honda","Mazda"],c:1},
+  {q:"¿Qué significa JDM?",a:["Japanese Drift Machine","Japanese Domestic Market","Japan Drive Mode","Japan Drift Motor"],c:1},
+  {q:"¿Qué marca tiene el logo del caballo?",a:["Porsche","Ferrari","Ford","Mustang"],c:1},
+  {q:"¿Qué marca creó el Skyline?",a:["Toyota","Nissan","Honda","Subaru"],c:1},
+  {q:"¿Qué motor tiene el Hellcat?",a:["V6","V8","V10","V12"],c:1},
+  {q:"¿Qué marca es alemana?",a:["Audi","Toyota","Hyundai","Mazda"],c:0},
+  {q:"¿Qué auto es muscle car?",a:["Civic","Mustang","Corolla","Golf"],c:1},
+  {q:"¿Qué marca es japonesa?",a:["BMW","Mercedes","Nissan","Audi"],c:2},
+  {q:"¿Qué tipo de tracción tiene un GT-R?",a:["FWD","RWD","AWD","4x2"],c:2},
+  {q:"¿Qué marca usa el logo de los 4 aros?",a:["BMW","Audi","VW","Porsche"],c:1},
+  {q:"¿Qué combustible usa un Tesla?",a:["Gasolina","Diésel","Eléctrico","Híbrido"],c:2},
+  {q:"¿Qué marca fabrica el Civic?",a:["Toyota","Honda","Nissan","Mazda"],c:1},
+  {q:"¿Qué país es Ferrari?",a:["Francia","Italia","Alemania","Japón"],c:1},
+  {q:"¿Qué auto es JDM?",a:["BMW M4","Audi RS5","Nissan Silvia","Ferrari F8"],c:2},
+  {q:"¿Qué marca creó el Camaro?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:1}
 ];
+
 // seleccionar 5 al azar
-const quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 5);
+const quiz = [...allQuestions].sort(() => Math.random() - 0.5).slice(0,5);
 
 let current = 0;
 let score = 0;
@@ -144,16 +131,22 @@ const bgMusic = document.getElementById("bgMusic");
 const soundCorrect = document.getElementById("soundCorrect");
 const soundWrong = document.getElementById("soundWrong");
 
+function safePlay(audio) {
+  try {
+    audio.currentTime = 0;
+    audio.play();
+  } catch (e) {}
+}
+
 function showQuestion() {
   const q = quiz[current];
-  qEl.innerText = q.q;
+  qEl.textContent = q.q;
   aEl.innerHTML = "";
-
   bar.style.width = `${(current / quiz.length) * 100}%`;
 
   q.a.forEach((txt, i) => {
     const btn = document.createElement("button");
-    btn.innerText = txt;
+    btn.textContent = txt;
     btn.onclick = () => checkAnswer(i);
     aEl.appendChild(btn);
   });
@@ -162,11 +155,9 @@ function showQuestion() {
 function checkAnswer(i) {
   if (i === quiz[current].c) {
     score++;
-    soundCorrect.currentTime = 0;
-    soundCorrect.play();
+    safePlay(soundCorrect);
   } else {
-    soundWrong.currentTime = 0;
-    soundWrong.play();
+    safePlay(soundWrong);
   }
   nextQuestion();
 }
@@ -199,9 +190,11 @@ function nextQuestion() {
 
 function toggleMusic() {
   if (!musicOn) {
-    bgMusic.volume = 0.3;
-    bgMusic.play();
-    musicOn = true;
+    try {
+      bgMusic.volume = 0.3;
+      bgMusic.play();
+      musicOn = true;
+    } catch(e){}
   } else {
     bgMusic.pause();
     musicOn = false;
@@ -209,3 +202,4 @@ function toggleMusic() {
 }
 
 showQuestion();
+</script>

@@ -160,35 +160,30 @@ function showQuestion() {
   });
 }
 
-function checkAnswer(i) {
-  if (i === quiz[current].c) {
-    score++;
-    soundCorrect.currentTime = 0;
-    soundCorrect.play();
-  } else {
-    soundWrong.currentTime = 0;
-    soundWrong.play();
-  }
-
+function nextQuestion() {
   current++;
-  if (current < quiz.length) {
-    setTimeout(showQuestion, 400);
+
+  if (current < selectedQuestions.length) {
+    showQuestion();
   } else {
-  bar.style.width = "100%";
+    bar.style.width = "100%";
 
-  let rankText = "Top 40% 😬";
-  let emoji = "😬";
+    let rank = "Top 40% 😬";
+    if (score === 5) rank = "Top 3% 🏆🔥";
+    else if (score === 4) rank = "Top 10% 😎";
+    else if (score === 3) rank = "Top 25% 👍";
 
-  if (score === 5) {
-    rankText = "Top 3% 🏆";
-    emoji = "🏆🔥";
-  } else if (score === 4) {
-    rankText = "Top 10% 😎";
-    emoji = "😎";
-  } else if (score === 3) {
-    rankText = "Top 25% 👍";
-    emoji = "👍";
+    question.innerHTML = `
+      <h2>🔥 Resultado final</h2>
+      <p>Puntaje: ${score}/5</p>
+      <p><strong>${rank}</strong></p>
+    `;
+
+    answers.innerHTML = `
+      <button onclick="location.reload()">🔁 Intentar otra vez</button>
+    `;
   }
+}
 
   qEl.innerHTML = `
     ${emoji}<br>
@@ -218,6 +213,7 @@ showQuestion();
 
 </body>
 </html>
+
 
 
 

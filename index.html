@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Quiz de Carros</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 25px rgba(0,0,0,.5);
+}
+
+h1 { margin-top: 0; }
+
+.progress {
+  width: 100%;
+  height: 10px;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #e10600;
+  transition: width .3s;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: #e10600;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover { opacity: .9; }
+
+.music-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<button class="music-btn" onclick="toggleMusic()">🔊 Música</button>
+
+<div class="container">
+  <h1>🚗 Quiz de Carros</h1>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <h2 id="question">Cargando…</h2>
+  <div id="answers"></div>
+</div>
+
+<!-- AUDIOS -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="soundCorrect">
+  <source src="correct.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="soundWrong">
+  <source src="wrong.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const allQuestions = [
+{q:"¿Qué marca fabrica el Supra?",a:["Nissan","Toyota","Honda","Mazda"],c:1},
+{q:"¿Qué significa JDM?",a:["Japanese Drift Machine","Japanese Domestic Market","Japan Drive Mode","Japan Drift Motor"],c:1},
+{q:"¿Qué marca tiene el logo del caballo?",a:["Porsche","Ferrari","Ford","Mustang"],c:1},
+{q:"¿Qué marca creó el Skyline?",a:["Toyota","Nissan","Honda","Subaru"],c:1},
+{q:"¿Qué motor tiene el Hellcat?",a:["V6","V8","V10","V12"],c:1},
+{q:"¿Qué marca es alemana?",a:["Audi","Toyota","Hyundai","Mazda"],c:0},
+{q:"¿Qué auto es muscle car?",a:["Civic","Mustang","Corolla","Golf"],c:1},
+{q:"¿Qué marca es japonesa?",a:["BMW","Mercedes","Nissan","Audi"],c:2},
+{q:"¿Qué tipo de tracción tiene un GT-R?",a:["FWD","RWD","AWD","4x2"],c:2},
+{q:"¿Qué marca usa el logo de los 4 aros?",a:["BMW","Audi","VW","Porsche"],c:1},
+{q:"¿Qué combustible usa un Tesla?",a:["Gasolina","Diésel","Eléctrico","Híbrido"],c:2},
+{q:"¿Qué marca fabrica el Civic?",a:["Toyota","Honda","Nissan","Mazda"],c:1},
+{q:"¿Qué país es Ferrari?",a:["Francia","Italia","Alemania","Japón"],c:1},
+{q:"¿Qué auto es JDM?",a:["BMW M4","Audi RS5","Nissan Silvia","Ferrari F8"],c:2},
+{q:"¿Qué marca creó el Camaro?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:1},
+{q:"¿Qué significa AWD?",a:["All Wheel Drive","Auto Wheel Drift","Advanced Wheel Drive","All Wheel Drift"],c:0},
+{q:"¿Qué marca tiene el logo del toro?",a:["Ferrari","Lamborghini","Porsche","Bugatti"],c:1},
+{q:"¿Qué auto es eléctrico?",a:["Supra","GT-R","Tesla Model 3","Mustang GT"],c:2},
+{q:"¿Qué marca creó el Golf?",a:["Audi","VW","Seat","Skoda"],c:1},
+{q:"¿Qué marca es coreana?",a:["Hyundai","Honda","Toyota","Nissan"],c:0},
+{q:"¿Qué auto es de rally?",a:["Supra","WRX","Charger","Camaro"],c:1},
+{q:"¿Qué motor es más común en supercars?",a:["V6","V8","V10","V12"],c:3},
+{q:"¿Qué marca fabrica el Chiron?",a:["Pagani","Bugatti","Koenigsegg","Ferrari"],c:1},
+{q:"¿Qué tracción usan la mayoría de los muscle cars?",a:["AWD","FWD","RWD","4x4"],c:2},
+{q:"¿Qué marca creó el RX-7?",a:["Mazda","Toyota","Honda","Nissan"],c:0},
+{q:"¿Qué tipo de motor usa el RX-7?",a:["V6","V8","Rotativo","Eléctrico"],c:2},
+{q:"¿Qué marca es sueca?",a:["Volvo","BMW","Audi","Renault"],c:0},
+{q:"¿Qué auto es híbrido?",a:["GT-R","Prius","Mustang","Camaro"],c:1},
+{q:"¿Qué marca creó el Challenger?",a:["Ford","Chevrolet","Dodge","Pontiac"],c:2}
+];
+
+// seleccionar 5 al azar
+const quiz = allQuestions.sort(() => 0.5 - Math.random()).slice(0,5);
+
+let current = 0;
+let score = 0;
+let musicOn = false;
+
+const qEl = document.getElementById("question");
+const aEl = document.getElementById("answers");
+const bar = document.getElementById("progressBar");
+
+const bgMusic = document.getElementById("bgMusic");
+const soundCorrect = document.getElementById("soundCorrect");
+const soundWrong = document.getElementById("soundWrong");
+
+function showQuestion() {
+  const q = quiz[current];
+  qEl.innerText = q.q;
+  aEl.innerHTML = "";
+
+  bar.style.width = `${(current / quiz.length) * 100}%`;
+
+  q.a.forEach((txt, i) => {
+    const btn = document.createElement("button");
+    btn.innerText = txt;
+    btn.onclick = () => checkAnswer(i);
+    aEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(i) {
+  if (i === quiz[current].c) {
+    score++;
+    soundCorrect.currentTime = 0;
+    soundCorrect.play();
+  } else {
+    soundWrong.currentTime = 0;
+    soundWrong.play();
+  }
+
+  current++;
+  if (current < quiz.length) {
+    setTimeout(showQuestion, 400);
+  } else {
+    bar.style.width = "100%";
+    qEl.innerText = `🔥 Puntaje: ${score}/${quiz.length}`;
+    aEl.innerHTML = `<button onclick="location.reload()">Jugar otra vez</button>`;
+  }
+}
+
+function toggleMusic() {
+  if (!musicOn) {
+    bgMusic.volume = 0.3;
+    bgMusic.play();
+    musicOn = true;
+  } else {
+    bgMusic.pause();
+    musicOn = false;
+  }
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>

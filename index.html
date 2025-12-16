@@ -67,8 +67,6 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  position: relative;
-  z-index: 2; /* Siempre encima de anuncios */
 }
 
 button:hover { opacity: .9; }
@@ -83,23 +81,7 @@ button:hover { opacity: .9; }
   font-size: 14px;
   z-index: 2;
 }
-
-/* ======== ANUNCIOS ======== */
-.ad-container {
-  width: 100%;
-  text-align: center;
-  margin: 15px 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.05);
-  padding: 10px 0;
-  position: relative;
-  z-index: 1; /* Debajo de botones */
-}
 </style>
-
-<!-- Script base de AdCash -->
-<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 
 </head>
 
@@ -110,13 +92,6 @@ button:hover { opacity: .9; }
 <div class="container">
   <h1>🚗 CarBrainIQ</h1>
 
-  <!-- ANUNCIO ARRIBA DEL CONTENIDO -->
-  <div class="ad-container">
-    <script type="text/javascript">
-      aclib.runAutoTag({ zoneId: 'exse1vv5nk' });
-    </script>
-  </div>
-
   <div class="progress">
     <div class="progress-bar" id="progressBar"></div>
   </div>
@@ -125,20 +100,6 @@ button:hover { opacity: .9; }
   <h2 id="question">Cargando…</h2>
   <div id="answers"></div>
 
-  <!-- ANUNCIO EN MEDIO DEL QUIZ -->
-  <div class="ad-container">
-    <script type="text/javascript">
-      aclib.runAutoTag({ zoneId: 'exse1vv5nl' });
-    </script>
-  </div>
-
-</div>
-
-<!-- ANUNCIO ABAJO / FOOTER -->
-<div class="ad-container">
-  <script type="text/javascript">
-    aclib.runAutoTag({ zoneId: 'exse1vv5nm' });
-  </script>
 </div>
 
 <!-- AUDIOS -->
@@ -240,3 +201,4 @@ showQuestion();
 
 </body>
 </html>
+
